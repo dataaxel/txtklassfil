@@ -56,10 +56,11 @@
   </div>
 
 <script>
-  const BUILD = "20260118131357";
+  const BUILD = "20260118192815";
   const BASE = new URL('.', window.location.href);
   const MODEL_URL = new URL(`tfjs_model/model.json?v=${BUILD}`, BASE).toString();
   const TOKENIZER_URL = new URL(`tfjs_model/tokenizer.json?v=${BUILD}`, BASE).toString();
+
   function weightUrlConverter(url) {
     return url.includes("?") ? `${url}&v=${BUILD}` : `${url}?v=${BUILD}`;
   }
@@ -76,7 +77,8 @@
     status: document.getElementById('status'),
   };
 
-  function log(x) { els.debug.textContent += x + "\n"; }
+  function log(x) { els.debug.textContent += x + "
+"; }
   function setStatus(s) { els.status.textContent = s ? `Status: ${s}` : ""; }
   function showError(msg) {
     els.alert.style.display = 'block'; els.ok.style.display = 'none';
@@ -99,7 +101,6 @@
       .trim();
   }
 
-  // Bag-of-words: skapa en float32-vektor med längd max_length (N)
   function vectorizeBow(text) {
     const N = tok.max_length;
     const v = new Float32Array(N);
@@ -111,7 +112,6 @@
         v[idx - 1] += 1.0;
       }
     }
-    // enkel normalisering (valfritt)
     const sum = v.reduce((a,b)=>a+b, 0);
     if (sum > 0) {
       for (let i=0;i<N;i++) v[i] = v[i] / sum;
@@ -144,7 +144,7 @@
 
       model = await tf.loadLayersModel(MODEL_URL, { weightUrlConverter });
       setStatus("Modell laddad ✅");
-      showOk("Modellen är laddad ✅ (enkel BoW-demo)");
+      showOk("Modellen är laddad ✅ (BoW-demo)");
       log("Input shape: " + JSON.stringify(model.inputs[0].shape));
     } catch (e) {
       console.error(e);
