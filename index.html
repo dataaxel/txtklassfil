@@ -61,8 +61,10 @@
   const BASE = new URL('.', window.location.href);
   const MODEL_URL = new URL(`tfjs_model/model.json?v=${BUILD}`, BASE).toString();
   const TOKENIZER_URL = new URL(`tfjs_model/tokenizer.json?v=${BUILD}`, BASE).toString();
+  <!-- Gör alltid viktsökvägen absolut och relativ till model.json enligt open ai -->
   function weightUrlConverter(url) {
-    return url.includes("?") ? `${url}&v=${BUILD}` : `${url}?v=${BUILD}`;
+      const abs = new URL(url, MODEL_URL).toString();
+      return abs.includes("?") ? `${abs}&v=${BUILD}` : `${abs}?v=${BUILD}`;
   }
 
   let model = null;
@@ -201,4 +203,5 @@
 </body>
 
 </html>
+
 
